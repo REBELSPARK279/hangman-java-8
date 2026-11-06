@@ -1,5 +1,7 @@
 package code.net.rebelspark.hangman_client.renderer.util;
 
+import code.net.rebelspark.hangman_client.renderer.GamePanel;
+
 import java.awt.*;
 
 public class FilledRect {
@@ -21,7 +23,9 @@ public class FilledRect {
         this(x, y, w, h, Color.BLACK);
     }
 
-    public void render(Graphics g, final int WINDOW_W, final int WINDOW_H) {
+    public void render(Graphics g) {
+        final int WINDOW_W = GamePanel.panel.getWidth();
+        final int WINDOW_H = GamePanel.panel.getHeight();
         int X = (int)(x * WINDOW_W);
         int Y = (int)(y * WINDOW_H);
         int W = (int)(w * WINDOW_W);

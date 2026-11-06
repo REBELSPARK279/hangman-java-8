@@ -1,6 +1,7 @@
 package code.net.rebelspark.hangman_client.keybinds.screens;
 
 import code.net.rebelspark.hangman_client.keybinds.handlers.KeybindInterface;
+import code.net.rebelspark.hangman_client.renderer.screens.in_game.EndOverlay;
 import code.net.rebelspark.hangman_client.state.GameStateHandler;
 import code.net.rebelspark.hangman_client.state.GameStates;
 

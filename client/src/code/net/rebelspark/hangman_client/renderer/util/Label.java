@@ -1,6 +1,7 @@
 package code.net.rebelspark.hangman_client.renderer.util;
 
 import code.net.rebelspark.hangman_client.init.regestries.Fonts;
+import code.net.rebelspark.hangman_client.renderer.GamePanel;
 
 import java.awt.*;
 
@@ -34,7 +35,9 @@ public class Label {
         this.text = text;
     }
 
-    public void render(Graphics g, final int WINDOW_WIDTH, final int WINDOW_HEIGHT) {
+    public void render(Graphics g) {
+        final int WINDOW_WIDTH = GamePanel.panel.getWidth();
+        final int WINDOW_HEIGHT = GamePanel.panel.getHeight();
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         FontMetrics fontMetrics;

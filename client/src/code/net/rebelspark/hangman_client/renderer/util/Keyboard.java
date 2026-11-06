@@ -1,12 +1,16 @@
 package code.net.rebelspark.hangman_client.renderer.util;
 
+import code.net.rebelspark.hangman_client.game_logic.client.KeyboardKeyStates;
+import code.net.rebelspark.hangman_client.game_logic.offline.Classic;
 import code.net.rebelspark.hangman_client.state.GameStates;
 import code.net.rebelspark.hangman_client.util.IllegalSpriteArgumentException;
 import code.net.rebelspark.hangman_client.util.Logger;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.TreeMap;
 import java.util.function.Consumer;
 
@@ -32,6 +36,23 @@ public class Keyboard {
                 this.x += x;
                 this.y += y;
                 border.updatePos(this.x, this.y);
+            }
+        }
+
+        private void setState(KeyboardKeyStates keyState) {
+            switch (keyState) {
+                case UNGUESSED:
+                    this.idleColor = Color.DARK_GRAY;
+                    this.hoverColor = Color.GRAY;
+                    break;
+                case YES:
+                    this.idleColor = new Color(25, 175, 25);
+                    this.hoverColor = new Color(85, 250, 85);
+                    break;
+                case NO:
+                    this.idleColor = new Color(175, 25, 25);
+                    this.hoverColor = new Color(250, 85, 85);
+                    break;
             }
         }
 
@@ -118,7 +139,79 @@ public class Keyboard {
     public enum KEYS {
         Q, W, E, R, T, Y, U, I, O, P,
         A, S, D, F, G, H, J, K, L,
-        Z, X, C, V, B, N, M
+        Z, X, C, V, B, N, M,
+        UNKNOWN
+    }
+
+    public static KEYS VkIntToKeys(int in) {
+        if (in == KeyEvent.VK_A) {
+            return (KEYS.A);
+        } else if (in == KeyEvent.VK_B) {
+            return (KEYS.B);
+        } else if (in == KeyEvent.VK_C) {
+            return (KEYS.C);
+        } else if (in == KeyEvent.VK_D) {
+            return (KEYS.D);
+        } else if (in == KeyEvent.VK_E) {
+            return (KEYS.E);
+        } else if (in == KeyEvent.VK_F) {
+            return (KEYS.F);
+        } else if (in == KeyEvent.VK_G) {
+            return (KEYS.G);
+        } else if (in == KeyEvent.VK_H) {
+            return (KEYS.H);
+        } else if (in == KeyEvent.VK_I) {
+            return (KEYS.I);
+        } else if (in == KeyEvent.VK_J) {
+            return (KEYS.J);
+        } else if (in == KeyEvent.VK_K) {
+            return (KEYS.K);
+        } else if (in == KeyEvent.VK_L) {
+            return (KEYS.L);
+        } else if (in == KeyEvent.VK_M) {
+            return (KEYS.M);
+        } else if (in == KeyEvent.VK_N) {
+            return (KEYS.N);
+        } else if (in == KeyEvent.VK_O) {
+            return (KEYS.O);
+        } else if (in == KeyEvent.VK_P) {
+            return (KEYS.P);
+        } else if (in == KeyEvent.VK_Q) {
+            return (KEYS.Q);
+        } else if (in == KeyEvent.VK_R) {
+            return (KEYS.R);
+        } else if (in == KeyEvent.VK_S) {
+            return (KEYS.S);
+        } else if (in == KeyEvent.VK_T) {
+            return (KEYS.T);
+        } else if (in == KeyEvent.VK_U) {
+            return (KEYS.U);
+        } else if (in == KeyEvent.VK_V) {
+            return (KEYS.V);
+        } else if (in == KeyEvent.VK_W) {
+            return (KEYS.W);
+        } else if (in == KeyEvent.VK_X) {
+            return (KEYS.X);
+        } else if (in == KeyEvent.VK_Y) {
+            return (KEYS.Y);
+        } else if (in == KeyEvent.VK_Z) {
+            return (KEYS.Z);
+        }
+        return (KEYS.UNKNOWN);
+    }
+
+    public static void updateKeyboardKeyStates(Keyboard board) {
+        final ArrayList<Character> guessedLetters = Classic.getGuessedLetters();
+        final ArrayList<Character> correctLetters = Classic.getCorrectLetters();
+        for (KeyboardButton key: board.KEYBOARD_BUTTONS) {
+            if (correctLetters.contains(key.text.toLowerCase().charAt(0))) {
+                key.setState(KeyboardKeyStates.YES);
+            } else if (guessedLetters.contains(key.text.toLowerCase().charAt(0))) {
+                key.setState(KeyboardKeyStates.NO);
+            } else {
+                key.setState(KeyboardKeyStates.UNGUESSED);
+            }
+        }
     }
 
     private static final byte ROWS = 3;
@@ -141,6 +234,7 @@ public class Keyboard {
     //LISTS
     public static final ArrayList<Float[]> KEYBOARD_POSITIONS = new ArrayList<>();
     public static final TreeMap<KEYS, Float[]> LETTER_POSITIONS = new TreeMap<>();
+    private final HashSet<KeyboardButton> KEYBOARD_BUTTONS = new HashSet<>();
 
     //BUTTON SETTINGS
     private static final float SIZE_W = 0.04f;
@@ -189,7 +283,7 @@ public class Keyboard {
     }
 
 
-    private Consumer<Character> runnable;
+    private Consumer<KEYS> runnable;
 
     //BUTTONS
 
@@ -225,11 +319,11 @@ public class Keyboard {
 
     private static KeyboardButton keyboardKeyBuilder(KEYS key, Keyboard board) {
         return (KeyboardButton) new KeyboardButton.Properties(board + key.toString(), LETTER_POSITIONS.get(key)[0] + (SIZE_W / 2f), LETTER_POSITIONS.get(key)[1] + (SIZE_H / 2f),
-                () -> board.runnable.accept(key.toString().charAt(0))).setText(key.toString(), 55).setBgColor(new Color(100, 100, 100), new Color(180, 180, 180))
+                () -> board.runnable.accept(key)).setText(key.toString(), 55).setBgColor(new Color(100, 100, 100), new Color(180, 180, 180))
                 .setBounds(SIZE_W, SIZE_H).appendBorder(4, Color.BLACK, Color.DARK_GRAY).build();
     }
 
-    public Keyboard(GameStates screen, float x, float y, Consumer<Character> runnable) {
+    public Keyboard(GameStates screen, float x, float y, Consumer<KEYS> runnable) {
         this.runnable = runnable;
         KEYBOARD_Q.polishBoard(screen, x, y);
         KEYBOARD_W.polishBoard(screen, x, y);
@@ -259,37 +353,67 @@ public class Keyboard {
         KEYBOARD_B.polishBoard(screen, x, y);
         KEYBOARD_N.polishBoard(screen, x, y);
         KEYBOARD_M.polishBoard(screen, x, y);
+
+
+        KEYBOARD_BUTTONS.add(KEYBOARD_Q);
+        KEYBOARD_BUTTONS.add(KEYBOARD_W);
+        KEYBOARD_BUTTONS.add(KEYBOARD_E);
+        KEYBOARD_BUTTONS.add(KEYBOARD_R);
+        KEYBOARD_BUTTONS.add(KEYBOARD_T);
+        KEYBOARD_BUTTONS.add(KEYBOARD_Y);
+        KEYBOARD_BUTTONS.add(KEYBOARD_U);
+        KEYBOARD_BUTTONS.add(KEYBOARD_I);
+        KEYBOARD_BUTTONS.add(KEYBOARD_O);
+        KEYBOARD_BUTTONS.add(KEYBOARD_P);
+
+        KEYBOARD_BUTTONS.add(KEYBOARD_A);
+        KEYBOARD_BUTTONS.add(KEYBOARD_S);
+        KEYBOARD_BUTTONS.add(KEYBOARD_D);
+        KEYBOARD_BUTTONS.add(KEYBOARD_F);
+        KEYBOARD_BUTTONS.add(KEYBOARD_G);
+        KEYBOARD_BUTTONS.add(KEYBOARD_H);
+        KEYBOARD_BUTTONS.add(KEYBOARD_J);
+        KEYBOARD_BUTTONS.add(KEYBOARD_K);
+        KEYBOARD_BUTTONS.add(KEYBOARD_L);
+
+        KEYBOARD_BUTTONS.add(KEYBOARD_Z);
+        KEYBOARD_BUTTONS.add(KEYBOARD_X);
+        KEYBOARD_BUTTONS.add(KEYBOARD_C);
+        KEYBOARD_BUTTONS.add(KEYBOARD_V);
+        KEYBOARD_BUTTONS.add(KEYBOARD_B);
+        KEYBOARD_BUTTONS.add(KEYBOARD_N);
+        KEYBOARD_BUTTONS.add(KEYBOARD_M);
     }
 
     public void render(Graphics g, final int w, final int h) {
-        KEYBOARD_Q.render(g, w, h);
-        KEYBOARD_W.render(g, w, h);
-        KEYBOARD_E.render(g, w, h);
-        KEYBOARD_R.render(g, w, h);
-        KEYBOARD_T.render(g, w, h);
-        KEYBOARD_Y.render(g, w, h);
-        KEYBOARD_U.render(g, w, h);
-        KEYBOARD_I.render(g, w, h);
-        KEYBOARD_O.render(g, w, h);
-        KEYBOARD_P.render(g, w, h);
+        KEYBOARD_Q.render(g);
+        KEYBOARD_W.render(g);
+        KEYBOARD_E.render(g);
+        KEYBOARD_R.render(g);
+        KEYBOARD_T.render(g);
+        KEYBOARD_Y.render(g);
+        KEYBOARD_U.render(g);
+        KEYBOARD_I.render(g);
+        KEYBOARD_O.render(g);
+        KEYBOARD_P.render(g);
 
-        KEYBOARD_A.render(g, w, h);
-        KEYBOARD_S.render(g, w, h);
-        KEYBOARD_D.render(g, w, h);
-        KEYBOARD_F.render(g, w, h);
-        KEYBOARD_G.render(g, w, h);
-        KEYBOARD_H.render(g, w, h);
-        KEYBOARD_J.render(g, w, h);
-        KEYBOARD_K.render(g, w, h);
-        KEYBOARD_L.render(g, w, h);
+        KEYBOARD_A.render(g);
+        KEYBOARD_S.render(g);
+        KEYBOARD_D.render(g);
+        KEYBOARD_F.render(g);
+        KEYBOARD_G.render(g);
+        KEYBOARD_H.render(g);
+        KEYBOARD_J.render(g);
+        KEYBOARD_K.render(g);
+        KEYBOARD_L.render(g);
 
-        KEYBOARD_Z.render(g, w, h);
-        KEYBOARD_X.render(g, w, h);
-        KEYBOARD_C.render(g, w, h);
-        KEYBOARD_V.render(g, w, h);
-        KEYBOARD_B.render(g, w, h);
-        KEYBOARD_N.render(g, w, h);
-        KEYBOARD_M.render(g, w, h);
+        KEYBOARD_Z.render(g);
+        KEYBOARD_X.render(g);
+        KEYBOARD_C.render(g);
+        KEYBOARD_V.render(g);
+        KEYBOARD_B.render(g);
+        KEYBOARD_N.render(g);
+        KEYBOARD_M.render(g);
     }
 
 }

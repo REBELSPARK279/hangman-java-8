@@ -10,5 +10,6 @@ public enum GameStates {
     SETTINGS,
     GAME_MENU,
     IN_GAME_BASE,
+    END_SCREEN,
     SHOP
 }

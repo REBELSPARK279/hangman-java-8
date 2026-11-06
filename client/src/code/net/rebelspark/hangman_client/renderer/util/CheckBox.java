@@ -101,8 +101,8 @@ public class CheckBox {
         return (this.screen);
     }
 
-    public void mouseClicked() {
-        if (hitbox.checkBounds()) {
+    public void mouseClicked(MouseEvent e) {
+        if (hitbox.checkBounds(e)) {
             checked = !checked;
             action.run();
         }

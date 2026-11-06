@@ -2,10 +2,10 @@ package code.net.rebelspark.hangman_client.renderer.util;
 
 import code.net.rebelspark.hangman_client.eventHandlers.MouseMovementHandler;
 import code.net.rebelspark.hangman_client.init.regestries.Fonts;
+import code.net.rebelspark.hangman_client.renderer.GamePanel;
 import code.net.rebelspark.hangman_client.state.GameStates;
 import code.net.rebelspark.hangman_client.util.IllegalSpriteArgumentException;
 import code.net.rebelspark.hangman_client.util.Logger;
-import com.sun.istack.internal.NotNull;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -28,6 +28,13 @@ public class Button {
             hitboxY = y;
             hitboxW = w;
             hitboxH = h;
+        }
+
+        private void disableHitbox() {
+            hitboxX = -1;
+            hitboxY = -1;
+            hitboxW = 0;
+            hitboxH = 0;
         }
 
         @Deprecated
@@ -102,6 +109,27 @@ public class Button {
     public static HashSet<Button> buttons = new HashSet<>();
     protected static final float DEFAULT_TEXT_SIZE = ((float)(65.0 / 1080.0));
 
+
+    //exempt from hover and clicks
+    private static HashSet<GameStates> exemptScreens = new HashSet<>();
+
+    public static void disableInputsTo(GameStates screen) {
+        exemptScreens.add(screen);
+    }
+
+    public static void enableInputsTo(GameStates screen) {
+        exemptScreens.remove(screen);
+    }
+
+    public static HashSet<GameStates> getExemptScreens() {
+        return (new HashSet<>(exemptScreens));
+    }
+
+    public static boolean canRecieveInput(GameStates screen) {
+        return (!exemptScreens.contains(screen));
+    }
+
+
     protected String name;
     protected float x;
     protected float y;
@@ -121,6 +149,29 @@ public class Button {
     protected GameStates screen;
     protected Border border;
 
+
+    protected Button(String name, GameStates screen, float x, float y, float w, float h, String text, float textSize, BufferedImage idleImage, BufferedImage hoverImage,
+                     Color idleColor, Color hoverColor, Color idleTextColor, Color hoverTextColor, Border border, Type type, Runnable runnable) {
+        this.name = name;
+        this.screen = screen;
+        this.x = x;
+        this.y = y;
+        this.width = w;
+        this.height = h;
+        this.text = text;
+        this.textSize = textSize;
+        this.idleImage = idleImage;
+        this.hoverImage = hoverImage;
+        this.idleColor = idleColor;
+        this.hoverColor = hoverColor;
+        this.idleTextColor = idleTextColor;
+        this.hoverTextColor = hoverTextColor;
+        this.border = border;
+        this.type = type;
+        this.runnable = runnable;
+        buttons.add(this);
+        hitbox = new Hitbox();
+    }
 
     @Deprecated
     public Button() {
@@ -169,34 +220,14 @@ public class Button {
         hitbox = new Hitbox();
     }
 
+
     //-------------------------------------------------------------------------------------------------------
     //                                            TEXT BASED
     //-------------------------------------------------------------------------------------------------------
 
-    protected Button(String name, GameStates screen, float x, float y, float w, float h, String text, float textSize, BufferedImage idleImage, BufferedImage hoverImage,
-                   Color idleColor, Color hoverColor, Color idleTextColor, Color hoverTextColor, Border border, Type type, Runnable runnable) {
-        this.name = name;
-        this.screen = screen;
-        this.x = x;
-        this.y = y;
-        this.width = w;
-        this.height = h;
-        this.text = text;
-        this.textSize = textSize;
-        this.idleImage = idleImage;
-        this.hoverImage = hoverImage;
-        this.idleColor = idleColor;
-        this.hoverColor = hoverColor;
-        this.idleTextColor = idleTextColor;
-        this.hoverTextColor = hoverTextColor;
-        this.border = border;
-        this.type = type;
-        this.runnable = runnable;
-        buttons.add(this);
-        hitbox = new Hitbox();
-    }
 
     //creates plain text button centered at [x, y] with font size 65 and static color black
+    @Deprecated
     public Button(GameStates screen, float x, float y, String text, Runnable runnable) {
         this.screen = screen;
         this.x = x;
@@ -211,6 +242,7 @@ public class Button {
     }
 
     //creates plain text button centered at [x, y] with font size 65 and static color 'idleTextColor'
+    @Deprecated
     public Button(GameStates screen, float x, float y, String text, Color idleTextColor, Runnable runnable) {
         this.screen = screen;
         this.x = x;
@@ -225,6 +257,7 @@ public class Button {
     }
 
     //creates plain text button centered at [x, y] with font size 65 and hoverable color 'idleTextColor' <--> 'hoverTextColor'
+    @Deprecated
     public Button(GameStates screen, float x, float y, String text, Color idleTextColor, Color hoverTextColor, Runnable runnable) {
         this.screen = screen;
         this.x = x;
@@ -240,6 +273,7 @@ public class Button {
     }
 
     //creates plain text button centered at ['x', 'y'] with font size 'textSize' and static color 'idleTextColor'
+    @Deprecated
     public Button(GameStates screen, float x, float y, String text, int textSize, Runnable runnable) {
         this.screen = screen;
         this.x = x;
@@ -254,6 +288,7 @@ public class Button {
     }
 
     //creates plain text button centered at ['x', 'y'] with font size 'textSize' and static color 'idleTextColor'
+    @Deprecated
     public Button(GameStates screen, float x, float y, String text, int textSize, Color idleTextColor, Runnable runnable) {
         this.screen = screen;
         this.x = x;
@@ -268,6 +303,7 @@ public class Button {
     }
 
     //creates plain text button centered at ['x', 'y'] with font size 'textSize' and hoverable color 'idleTextColor' <--> 'hoverTextColor'
+    @Deprecated
     public Button(GameStates screen, float x, float y, String text, int textSize, Color idleTextColor, Color hoverTextColor, Runnable runnable) {
         this.screen = screen;
         this.x = x;
@@ -286,6 +322,7 @@ public class Button {
     //                                             IMAGE BASED
     //-------------------------------------------------------------------------------------------------------
 
+    @Deprecated
     public Button(GameStates screen, float x, float y, float width, float height, BufferedImage idleImage, BufferedImage hoverImage, Runnable runnable) {
         this.screen = screen;
         this.x = x;
@@ -300,6 +337,7 @@ public class Button {
         this.runnable = Objects.requireNonNull(runnable);
     }
 
+    @Deprecated
     public Button(GameStates screen, float x, float y, float width, float height, BufferedImage idleImage, Runnable runnable) {
         this.screen = screen;
         this.x = x;
@@ -319,6 +357,7 @@ public class Button {
 
     ///just color
 
+    @Deprecated
     public Button(GameStates screen, float x, float y, float width, float height, Color idleColor, Runnable runnable) {
         this.screen = screen;
         this.x = x;
@@ -332,6 +371,7 @@ public class Button {
         this.runnable = Objects.requireNonNull(runnable);
     }
 
+    @Deprecated
     public Button(GameStates screen, float x, float y, float width, float height, Color idleColor, Color hoverColor, Runnable runnable) {
         this.screen = screen;
         this.x = x;
@@ -350,6 +390,7 @@ public class Button {
 
 
     /// static text color hoverable bg color
+    @Deprecated
     public Button(GameStates screen, float x, float y, float width, float height, Color idleColor, Color hoverColor, String text, Runnable runnable) {
         this.screen = screen;
         this.x = x;
@@ -367,6 +408,7 @@ public class Button {
         this.runnable = Objects.requireNonNull(runnable);
     }
 
+    @Deprecated
     public Button(GameStates screen, float x, float y, float width, float height, Color idleColor, Color hoverColor, String text, Color idleTextColor, Runnable runnable) {
         this.screen = screen;
         this.x = x;
@@ -384,6 +426,7 @@ public class Button {
         this.runnable = Objects.requireNonNull(runnable);
     }
 
+    @Deprecated
     public Button(GameStates screen, float x, float y, float width, float height, Color idleColor, Color hoverColor, String text, float textSize, Runnable runnable) {
         this.screen = screen;
         this.x = x;
@@ -401,6 +444,7 @@ public class Button {
         this.runnable = Objects.requireNonNull(runnable);
     }
 
+    @Deprecated
     public Button(GameStates screen, float x, float y, float width, float height, Color idleColor, Color hoverColor, String text, float textSize, Color idleTextColor, Runnable runnable) {
         this.screen = screen;
         this.x = x;
@@ -423,6 +467,7 @@ public class Button {
 
 ///static bg color static text color
 
+@Deprecated
     public Button(GameStates screen, float x, float y, float width, float height, Color idleColor, String text, Runnable runnable) {
         this.screen = screen;
         this.x = x;
@@ -439,6 +484,7 @@ public class Button {
         this.runnable = Objects.requireNonNull(runnable);
     }
 
+    @Deprecated
     public Button(GameStates screen, float x, float y, float width, float height, Color idleColor, String text, Color idleTextColor, Runnable runnable) {
         this.screen = screen;
         this.x = x;
@@ -455,6 +501,7 @@ public class Button {
         this.runnable = Objects.requireNonNull(runnable);
     }
 
+    @Deprecated
     public Button(GameStates screen, float x, float y, float width, float height, Color idleColor, String text, float textSize, Color idleTextColor, Runnable runnable) {
         this.screen = screen;
         this.x = x;
@@ -476,6 +523,7 @@ public class Button {
 
     ///static bg color hoverable text color
 
+    @Deprecated
     public Button(GameStates screen, float x, float y, float width, float height, Color idleColor, String text, Color idleTextColor, Color hoverTextColor, Runnable runnable) {
         this.screen = screen;
         this.x = x;
@@ -493,6 +541,7 @@ public class Button {
         this.runnable = Objects.requireNonNull(runnable);
     }
 
+    @Deprecated
     public Button(GameStates screen, float x, float y, float width, float height, Color idleColor, String text, float textSize, Color idleTextColor, Color hoverTextColor, Runnable runnable) {
         this.screen = screen;
         this.x = x;
@@ -515,6 +564,7 @@ public class Button {
 
     ///hoverable text hoverable bg
 
+    @Deprecated
     public Button(GameStates screen, float x, float y, float width, float height, Color idleColor, Color hoverColor, String text, Color idleTextColor, Color hoverTextColor, Runnable runnable) {
         this.screen = screen;
         this.x = x;
@@ -533,6 +583,7 @@ public class Button {
         this.runnable = Objects.requireNonNull(runnable);
     }
 
+    @Deprecated
     public Button(GameStates screen, float x, float y, float width, float height, Color idleColor, Color hoverColor, String text, float textSize, Color idleTextColor, Color hoverTextColor, Runnable runnable) {
         this.screen = screen;
         this.x = x;
@@ -629,7 +680,7 @@ public class Button {
 
         protected final String PROPERTY_ALR_DEFINED_MSG = "Tried to set one property to a button twice";
 
-        public Properties(GameStates screen, String name, float x, float y, @NotNull Runnable runnable) {
+        public Properties(GameStates screen, String name, float x, float y, Runnable runnable) {
             this.screen = screen;
             this.name = name;
             this.x = x;
@@ -803,7 +854,9 @@ public class Button {
         }
     }
 
-    public void render(Graphics g, final int WINDOW_WIDTH, final int WINDOW_HEIGHT) {
+    public void render(Graphics g) {
+        final int WINDOW_WIDTH = GamePanel.panel.getWidth();
+        final int WINDOW_HEIGHT = GamePanel.panel.getHeight();
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         FontMetrics fontMetrics;
@@ -936,6 +989,9 @@ public class Button {
                 g.setColor(Color.BLACK);
                 g2d.setColor(Color.BLACK);
                 break;
+        }
+        if (!canRecieveInput(screen)) {
+            hitbox.disableHitbox();
         }
         if (border != null) {
             border.render(g, hitbox.checkBounds());

@@ -1,9 +1,11 @@
 package code.net.rebelspark.hangman_client.eventHandlers;
 
+import code.net.rebelspark.hangman_client.game_logic.offline.Classic;
 import code.net.rebelspark.hangman_client.renderer.GamePanel;
 import code.net.rebelspark.hangman_client.renderer.util.Button;
 import code.net.rebelspark.hangman_client.renderer.util.CheckBox;
 import code.net.rebelspark.hangman_client.state.GameStateHandler;
+import code.net.rebelspark.hangman_client.state.GameStates;
 import code.net.rebelspark.hangman_client.util.Logger;
 
 import java.awt.event.MouseEvent;
@@ -15,13 +17,15 @@ public class MouseListenerHandler implements MouseListener {
     public void mouseClicked(MouseEvent e) {
         Logger.DEBUG("click");
         for (Button button : new ArrayList<>(Button.buttons)) {
-            if (button.getRenderScreen() == GameStateHandler.getGameState()) {
+            if (button.getRenderScreen() == GameStateHandler.getGameState() ||
+                    (Classic.getEndScreenStatus() && button.getRenderScreen() == GameStates.END_SCREEN &&
+                    (GameStateHandler.getGameState() == GameStates.IN_GAME_BASE))) {
                 button.mouseClicked(e);
             }
         }
         for (CheckBox checkBox: CheckBox.checkBoxes) {
             if (checkBox.getRenderScreen() == GameStateHandler.getGameState()) {
-                checkBox.mouseClicked();
+                checkBox.mouseClicked(e);
             }
         }
         GameStateHandler.setDelayedState();

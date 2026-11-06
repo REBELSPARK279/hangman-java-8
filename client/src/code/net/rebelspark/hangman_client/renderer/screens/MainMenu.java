@@ -41,8 +41,8 @@ public class MainMenu {
         g2d.setFont(Fonts.RUBIK.deriveFont((float)(65.0 / 1080.0) * height));
         fontMetrics = g2d.getFontMetrics();
 
-        playButton.render(graphics, width, height);
-        settingsButton.render(graphics, width, height);
+        playButton.render(graphics);
+        settingsButton.render(graphics);
 
 
 
@@ -61,10 +61,10 @@ public class MainMenu {
                 "Return", 70, Color.BLACK, () -> GameStateHandler.triggerDelayedSetGameState(GameStates.MAIN_MENU)).appendBorder(7, Color.BLACK, Color.GRAY);
 
         public static void render(Graphics g, int w, int h) {
-            BANNER.render(g, w, h);
-            LABEL.render(g, w, h);
-            EXIT.render(g, w, h);
-            BACK.render(g, w, h);
+            BANNER.render(g);
+            LABEL.render(g);
+            EXIT.render(g);
+            BACK.render(g);
         }
     }
 

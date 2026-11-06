@@ -41,12 +41,11 @@ public class GameSettings {
     }
 
     public static void pushNewSettings() {
-
         if (currentSettings.fullscreen != potentialNewSettings.fullscreen) {
             ResolutionHandler.toggleFullscreen();
         }
 
-        if (!potentialNewSettings.fullscreen) {
+        if (!potentialNewSettings.fullscreen && (currentSettings.resolution != potentialNewSettings.resolution)) {
             ResolutionHandler.setResolution(potentialNewSettings.resolution);
         }
 

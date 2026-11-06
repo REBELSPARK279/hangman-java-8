@@ -7,8 +7,10 @@ import code.net.rebelspark.hangman_client.renderer.screens.GameMenu;
 import code.net.rebelspark.hangman_client.renderer.screens.MainMenu;
 import code.net.rebelspark.hangman_client.renderer.screens.Settings;
 import code.net.rebelspark.hangman_client.renderer.screens.in_game.BaseGameScreen;
+import code.net.rebelspark.hangman_client.renderer.screens.in_game.EndOverlay;
 import code.net.rebelspark.hangman_client.state.GameStateHandler;
 import code.net.rebelspark.hangman_client.util.CONSTANTS;
+import code.net.rebelspark.hangman_client.util.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,12 +30,13 @@ public class GamePanel extends JPanel {
     public static void init() {
         SwingUtilities.invokeLater(() -> {
             window = new JFrame(CONSTANTS.WINDOW_NAME);
-            window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            window.setSize(CONSTANTS.WINDOW_INIT_SIZE_W, CONSTANTS.WINDOW_INIT_SIZE_H);
-            window.setLocationRelativeTo(null);
-            window.setResizable(false);
             panel = new GamePanel();
             window.add(panel);
+            window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            panel.setPreferredSize(new Dimension/*Im convinced its a Creo reference*/(CONSTANTS.WINDOW_INIT_SIZE_W, CONSTANTS.WINDOW_INIT_SIZE_H));
+            window.pack();
+            window.setLocationRelativeTo(null);
+            window.setResizable(false);
 
             window.setVisible(true);
             panel.requestFocusInWindow();
@@ -59,10 +62,10 @@ public class GamePanel extends JPanel {
                 Settings.render(g, getWidth(), getHeight());
                 break;
             case GAME_MENU:
-                GameMenu.render(g, getWidth(), getHeight());
+                GameMenu.render(g);
                 break;
             case IN_GAME_BASE:
-                BaseGameScreen.render(g, getWidth(), getHeight());
+                BaseGameScreen.render(g);
                 break;
             case SHOP:
                 break;

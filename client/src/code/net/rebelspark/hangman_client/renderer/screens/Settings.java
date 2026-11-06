@@ -51,17 +51,17 @@ public class Settings {
 
     public static void render(Graphics g, int w, int h) {
 
-        MAIN_MENU_BUTTON.render(g, w, h);
-        HEADER_LABEL.render(g, w, h);
+        MAIN_MENU_BUTTON.render(g);
+        HEADER_LABEL.render(g);
 
-        RESOLUTION_LABEL.render(g, w, h);
-        RESOLUTION_DOWN.render(g, w, h);
-        RESOLUTION_UP.render(g, w, h);
+        RESOLUTION_LABEL.render(g);
+        RESOLUTION_DOWN.render(g);
+        RESOLUTION_UP.render(g);
 
-        FULLSCREEN_LABEL.render(g, w, h);
+        FULLSCREEN_LABEL.render(g);
         FULLSCREEN_CHECKBOX.render(g, w, h);
 
-        SETTINGS_APPLY.render(g, w, h);
+        SETTINGS_APPLY.render(g);
     }
 
 }

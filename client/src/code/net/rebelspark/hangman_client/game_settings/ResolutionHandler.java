@@ -1,9 +1,7 @@
 package code.net.rebelspark.hangman_client.game_settings;
 
-import code.net.rebelspark.hangman_client.init.InitHandler;
 import code.net.rebelspark.hangman_client.renderer.GamePanel;
 import code.net.rebelspark.hangman_client.util.Logger;
-import sun.rmi.runtime.Log;
 
 import javax.swing.*;
 import java.awt.*;
@@ -108,7 +106,11 @@ public class ResolutionHandler {
     }
 
     public static void setResolution(Resolutions res) {
-        GamePanel.window.setSize(RES_CONV.get(res)[1], RES_CONV.get(res)[0]);
+        GamePanel.window.setResizable(true);
+        Logger.DEBUG("set  res to " + RES_CONV.get(res)[1] + ", " + RES_CONV.get(res)[0]);
+        GamePanel.panel.setPreferredSize(new Dimension/*CREO REFERENCE!??!?*/(RES_CONV.get(res)[1], RES_CONV.get(res)[0]));
+        GamePanel.window.pack();
+        GamePanel.window.setResizable(false);
     }
 
     public static String getFormattedResolution(Resolutions res) {
