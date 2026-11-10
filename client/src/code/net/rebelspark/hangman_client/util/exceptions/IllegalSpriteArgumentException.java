@@ -1,6 +1,4 @@
-package code.net.rebelspark.hangman_client.util;
-
-import java.util.Arrays;
+package code.net.rebelspark.hangman_client.util.exceptions;
 
 public class IllegalSpriteArgumentException extends RuntimeException {
     public IllegalSpriteArgumentException(String message) {

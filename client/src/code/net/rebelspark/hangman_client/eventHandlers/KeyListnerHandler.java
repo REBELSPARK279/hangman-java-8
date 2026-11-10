@@ -4,6 +4,8 @@ import code.net.rebelspark.hangman_client.keybinds.handlers.KeybindInterface;
 import code.net.rebelspark.hangman_client.keybinds.screens.*;
 import code.net.rebelspark.hangman_client.keybinds.subscreens.main_menu.MainMenu_ExitScreen_Keybinds;
 import code.net.rebelspark.hangman_client.renderer.GamePanel;
+import code.net.rebelspark.hangman_client.renderer.overlay.in_game.EndOverlay;
+import code.net.rebelspark.hangman_client.state.DebugState;
 import code.net.rebelspark.hangman_client.state.GameStateHandler;
 import code.net.rebelspark.hangman_client.util.Logger;
 
@@ -36,12 +38,19 @@ public class KeyListnerHandler implements KeyListener {
             case SHOP:
                 target = new Shop_Keybinds();
                 break;
+            case SUGGEST_WORD:
+                target = new SuggestWord_Keybinds();
+                break;
         }
         if (target == null) {
             Logger.CRITICAL("Gamestate " + GameStateHandler.getGameState() + " has not been registered with 'KeyListenerHandler.java'");
             throw new RuntimeException("A GAME STATE HAS NOT BEEN REGISTERED WITH 'KeyListenerHandler.java'!");
         }
+        if (KeyEvent.VK_F3 == KEY) {
+            DebugState.debugOn = !DebugState.debugOn;
+        }
         target.acceptKey(KEY);
+        EndOverlay.setDelayedState();
         GamePanel.panel.repaint();
     }
 

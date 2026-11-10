@@ -1,0 +1,18 @@
+Update ALPHA-0.2 changelog
+
+> gameplay changes:
+-> added tons of new words
+-> added debug overlay
+-> added word suggestion
+
+
+> qol changes
+-> added settings persistence
+
+
+> backend changes:
+-> duplicate word detection
+-> malformed word list detection
+
+> bug fixes:
+-> fixed click through on end of game where one click can execute both the final keyboard click of the game and a button on the end screen overlay

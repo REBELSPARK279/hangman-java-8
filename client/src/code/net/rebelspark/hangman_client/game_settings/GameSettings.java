@@ -1,8 +1,11 @@
 package code.net.rebelspark.hangman_client.game_settings;
 
-import code.net.rebelspark.hangman_client.renderer.GamePanel;
-import code.net.rebelspark.hangman_client.renderer.screens.Settings;
+import code.net.rebelspark.hangman_client.init.file_readers.SettingsReader;
+import code.net.rebelspark.hangman_client.util.CONSTANTS;
 import code.net.rebelspark.hangman_client.util.Logger;
+
+import java.io.IOException;
+import java.nio.file.Files;
 
 public class GameSettings {
 
@@ -41,6 +44,17 @@ public class GameSettings {
     }
 
     public static void pushNewSettings() {
+
+        final String formattedSettings =
+                "\"window_size\": '" + potentialNewSettings.resolution.toString().substring(1) + "p'\n" +
+                "\"fullscreen\": '" + potentialNewSettings.fullscreen + "'\n";
+
+        try {
+            Files.write(CONSTANTS.USER_PROFILE_SETTINGS_FILEPATH, formattedSettings.getBytes());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         if (currentSettings.fullscreen != potentialNewSettings.fullscreen) {
             ResolutionHandler.toggleFullscreen();
         }
@@ -52,6 +66,6 @@ public class GameSettings {
         currentSettings = potentialNewSettings.clone();
     }
 
-    public static GameSettings currentSettings = new GameSettings(ResolutionHandler.Resolutions.P480, false);
+    public static GameSettings currentSettings = new GameSettings(SettingsReader.RedSettings.parseResolution(), SettingsReader.RedSettings.parseFullscreen());
     public static GameSettings potentialNewSettings = new GameSettings();
 }

@@ -29,9 +29,14 @@ public class MainMenu {
         GameStateHandler.triggerDelayedSetGameState(GameStates.GAME_MENU);
     });
 
-    public static void render(Graphics graphics, int width, int height) {
+    private static final Button suggestWordButton = new Button.Properties(GameStates.MAIN_MENU, "suggest_word", 0.5f, 0.9f, () -> {
+        GameStateHandler.triggerDelayedSetGameState(GameStates.SUGGEST_WORD);
+    }).setText("Suggest Words", 40).setTextColor(Color.BLACK).setBgColor(Color.DARK_GRAY, Color.GRAY).setBounds(0.2f, 0.1f)
+            .appendBorder(8, Color.BLACK).build();
 
-        Graphics2D g2d = (Graphics2D)graphics;
+    public static void render(Graphics g, int width, int height) {
+
+        Graphics2D g2d = (Graphics2D)g;
         g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         g2d.setFont(Fonts.RUSSO_ONE.deriveFont((float)((100.0 / 1080.0) * height)));
         FontMetrics fontMetrics = g2d.getFontMetrics();
@@ -41,9 +46,9 @@ public class MainMenu {
         g2d.setFont(Fonts.RUBIK.deriveFont((float)(65.0 / 1080.0) * height));
         fontMetrics = g2d.getFontMetrics();
 
-        playButton.render(graphics);
-        settingsButton.render(graphics);
-
+        playButton.render(g);
+        settingsButton.render(g);
+        suggestWordButton.render(g);
 
 
     }

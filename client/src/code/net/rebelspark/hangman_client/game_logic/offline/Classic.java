@@ -2,7 +2,7 @@ package code.net.rebelspark.hangman_client.game_logic.offline;
 
 import code.net.rebelspark.hangman_client.game_logic.client.KeyboardKeyStates;
 import code.net.rebelspark.hangman_client.renderer.screens.in_game.BaseGameScreen;
-import code.net.rebelspark.hangman_client.renderer.screens.in_game.EndOverlay;
+import code.net.rebelspark.hangman_client.renderer.overlay.in_game.EndOverlay;
 import code.net.rebelspark.hangman_client.renderer.util.Button;
 import code.net.rebelspark.hangman_client.renderer.util.Keyboard;
 import code.net.rebelspark.hangman_client.state.GameStates;
@@ -13,22 +13,15 @@ import java.util.ArrayList;
 
 public class Classic {
 
-    private static final byte STARTING_LIVES = 5;
-
+    private static final byte STARTING_LIVES = 6;
     private static String currentWord;
     private static byte lives;
     private static final KeyboardKeyStates[] keyStates = new KeyboardKeyStates[26];
     private static final ArrayList<Character> guessedLetters = new ArrayList<>();
     private static final ArrayList<Character> correctLetters = new ArrayList<>();
 
-    private static boolean onEndScreen = false;
-
-    public static boolean getEndScreenStatus() {
-        return (onEndScreen);
-    }
-
     public static void startGame() {
-        onEndScreen = false;
+        EndOverlay.triggerDelayedEndScreenOverlay(false);
         currentWord = OFFLINE_WORDLIST.OFFINE_WORDLIST[BetterMath.randInt(0, OFFLINE_WORDLIST.OFFINE_WORDLIST.length)];
         lives = STARTING_LIVES;
         BaseGameScreen.setLivesLabel(lives + " Lives");
@@ -70,7 +63,7 @@ public class Classic {
             Logger.DEBUG(Keyboard.KEYS.UNKNOWN);
             return;
         }
-        if (getEndScreenStatus()) {
+        if (EndOverlay.getState()) {
             return;
         }
         final char key = keys.toString().toLowerCase().charAt(0);
@@ -95,7 +88,7 @@ public class Classic {
                 Logger.DEBUG("you lose :(");
                 Logger.DEBUG(currentWord);
                 //loss
-                onEndScreen = true;
+                EndOverlay.triggerDelayedEndScreenOverlay(true);
                 Button.enableInputsTo(GameStates.END_SCREEN);
                 Button.disableInputsTo(GameStates.IN_GAME_BASE);
                 EndOverlay.setEndScreenTitleStatus(false, currentWord);
@@ -113,7 +106,7 @@ public class Classic {
         if (!correctLetters.contains('_')) {
             Logger.DEBUG("you win!");
             //win
-            onEndScreen = true;
+            EndOverlay.triggerDelayedEndScreenOverlay(true);
             Button.enableInputsTo(GameStates.END_SCREEN);
             Button.disableInputsTo(GameStates.IN_GAME_BASE);
             EndOverlay.setEndScreenTitleStatus(true, currentWord);

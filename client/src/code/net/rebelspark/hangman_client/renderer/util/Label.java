@@ -31,8 +31,9 @@ public class Label {
         this(x, y, text, textSize, Fonts.RUBIK, textColor);
     }
 
-    public void setText(String text) {
+    public Label setText(String text) {
         this.text = text;
+        return (this);
     }
 
     public void render(Graphics g) {

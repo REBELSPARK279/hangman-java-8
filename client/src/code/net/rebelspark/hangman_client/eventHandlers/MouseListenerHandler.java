@@ -1,7 +1,7 @@
 package code.net.rebelspark.hangman_client.eventHandlers;
 
-import code.net.rebelspark.hangman_client.game_logic.offline.Classic;
 import code.net.rebelspark.hangman_client.renderer.GamePanel;
+import code.net.rebelspark.hangman_client.renderer.overlay.in_game.EndOverlay;
 import code.net.rebelspark.hangman_client.renderer.util.Button;
 import code.net.rebelspark.hangman_client.renderer.util.CheckBox;
 import code.net.rebelspark.hangman_client.state.GameStateHandler;
@@ -18,7 +18,7 @@ public class MouseListenerHandler implements MouseListener {
         Logger.DEBUG("click");
         for (Button button : new ArrayList<>(Button.buttons)) {
             if (button.getRenderScreen() == GameStateHandler.getGameState() ||
-                    (Classic.getEndScreenStatus() && button.getRenderScreen() == GameStates.END_SCREEN &&
+                    (EndOverlay.getState() && button.getRenderScreen() == GameStates.END_SCREEN &&
                     (GameStateHandler.getGameState() == GameStates.IN_GAME_BASE))) {
                 button.mouseClicked(e);
             }
@@ -29,6 +29,7 @@ public class MouseListenerHandler implements MouseListener {
             }
         }
         GameStateHandler.setDelayedState();
+        EndOverlay.setDelayedState();
         GamePanel.panel.repaint();
     }
 

@@ -1,5 +1,6 @@
 package code.net.rebelspark.hangman_client.game_settings;
 
+import code.net.rebelspark.hangman_client.init.file_readers.SettingsReader;
 import code.net.rebelspark.hangman_client.renderer.GamePanel;
 import code.net.rebelspark.hangman_client.util.Logger;
 
@@ -17,7 +18,7 @@ public class ResolutionHandler {
         P2160
     }
 
-    private static final HashMap<Resolutions, int[]> RES_CONV = new HashMap<>();
+    private  static final HashMap<Resolutions, int[]> RES_CONV = new HashMap<>();
 
     static {
         RES_CONV.put(Resolutions.P360, new int[]{360, 640});
@@ -111,6 +112,20 @@ public class ResolutionHandler {
         GamePanel.panel.setPreferredSize(new Dimension/*CREO REFERENCE!??!?*/(RES_CONV.get(res)[1], RES_CONV.get(res)[0]));
         GamePanel.window.pack();
         GamePanel.window.setResizable(false);
+    }
+
+    public static void startStartupResolution() {
+        Resolutions res = SettingsReader.RedSettings.parseResolution();
+        int[] dimensions /*creo?*/ = RES_CONV.get(res);
+        GamePanel.panel.setPreferredSize(new Dimension/*Im convinced its a Creo reference*/(dimensions[1], dimensions[0]));
+
+    }
+
+    public static void startStartupFullscreen() {
+        String fullscreen = SettingsReader.RedSettings.getStoredSettings().get(SettingsReader.SETTINGS.FULLSCREEN);
+        if (fullscreen.equalsIgnoreCase("true")) {
+            toggleFullscreen();
+        }
     }
 
     public static String getFormattedResolution(Resolutions res) {

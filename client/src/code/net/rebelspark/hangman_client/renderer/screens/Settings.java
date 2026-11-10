@@ -2,6 +2,7 @@ package code.net.rebelspark.hangman_client.renderer.screens;
 
 import code.net.rebelspark.hangman_client.game_settings.GameSettings;
 import code.net.rebelspark.hangman_client.game_settings.ResolutionHandler;
+import code.net.rebelspark.hangman_client.init.file_readers.SettingsReader;
 import code.net.rebelspark.hangman_client.renderer.util.Button;
 import code.net.rebelspark.hangman_client.renderer.util.CheckBox;
 import code.net.rebelspark.hangman_client.renderer.util.Label;
@@ -15,9 +16,9 @@ public class Settings {
     public static final Button MAIN_MENU_BUTTON = new Button(GameStates.SETTINGS, 0.06f, 0.06f, "<--", 55, Color.BLACK, Color.BLUE, () -> GameStateHandler.triggerDelayedSetGameState(GameStates.MAIN_MENU));
     private static final Label HEADER_LABEL = new Label(0.5f, 0.075f, "SETTINGS", 100);
 
-    public static final Label RESOLUTION_LABEL = new Label(0.5f, 0.3f, ResolutionHandler.getFormattedResolution(ResolutionHandler.Resolutions.P480));
+    public static final Label RESOLUTION_LABEL = new Label(0.5f, 0.3f, ResolutionHandler.getFormattedResolution(SettingsReader.RedSettings.parseResolution()));
 
-    public static final CheckBox FULLSCREEN_CHECKBOX = new CheckBox(GameStates.SETTINGS, 0.6f, 0.425f, 0.05f, Color.BLACK, Color.GRAY, () -> {
+    public static final CheckBox FULLSCREEN_CHECKBOX = new CheckBox(GameStates.SETTINGS, 0.6f, 0.425f, 0.05f, Color.BLACK, Color.GRAY, SettingsReader.RedSettings.parseFullscreen(), () -> {
         GameSettings.potentialNewSettings.fullscreen = !GameSettings.potentialNewSettings.fullscreen;
         if (GameSettings.potentialNewSettings.fullscreen) {
             RESOLUTION_LABEL.setText("Fullscreen");

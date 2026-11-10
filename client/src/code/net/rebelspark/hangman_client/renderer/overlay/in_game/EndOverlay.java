@@ -1,4 +1,4 @@
-package code.net.rebelspark.hangman_client.renderer.screens.in_game;
+package code.net.rebelspark.hangman_client.renderer.overlay.in_game;
 
 import code.net.rebelspark.hangman_client.game_logic.offline.Classic;
 import code.net.rebelspark.hangman_client.renderer.GamePanel;
@@ -33,6 +33,21 @@ public class EndOverlay {
         } else {
             TITLE.setText("You Lost. The word was " + word + '.');
         }
+    }
+
+    private static boolean state = false;
+    private static boolean delayedState = false;
+
+    public static void triggerDelayedEndScreenOverlay(boolean bool) {
+        delayedState = bool;
+    }
+
+    public static void setDelayedState() {
+        state = delayedState;
+    }
+
+    public static boolean getState() {
+        return (state);
     }
 
     public static void renderEndScreenOverlay(Graphics g) {

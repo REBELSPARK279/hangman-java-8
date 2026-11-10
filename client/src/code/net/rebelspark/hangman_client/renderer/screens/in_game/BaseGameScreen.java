@@ -3,6 +3,7 @@ package code.net.rebelspark.hangman_client.renderer.screens.in_game;
 import code.net.rebelspark.hangman_client.game_logic.offline.Classic;
 import code.net.rebelspark.hangman_client.init.regestries.Fonts;
 import code.net.rebelspark.hangman_client.renderer.GamePanel;
+import code.net.rebelspark.hangman_client.renderer.overlay.in_game.EndOverlay;
 import code.net.rebelspark.hangman_client.renderer.util.Keyboard;
 import code.net.rebelspark.hangman_client.renderer.util.Label;
 import code.net.rebelspark.hangman_client.state.GameStates;
@@ -17,7 +18,6 @@ public class BaseGameScreen {
         Classic.receiveInput(key);
         Logger.INFO("Keyboard key clicked");
         Logger.DEBUG(key);
-        GamePanel.panel.repaint();
     });
 
     public static void render(Graphics g) {
@@ -26,9 +26,9 @@ public class BaseGameScreen {
         g.drawLine((int)(0.5 * WINDOW_W), 0, (int)(0.5 * WINDOW_W), WINDOW_H);
         g.drawLine(0, (int)(0.5 * WINDOW_H), WINDOW_W, (int)(0.5 * WINDOW_H));
         Keyboard.updateKeyboardKeyStates(keyboard);
-        keyboard.render(g, WINDOW_W, WINDOW_H);
+        keyboard.render(g);
         renderGame(g, Classic.getWordLength(), Classic.getLives());
-        if (Classic.getEndScreenStatus()) {
+        if (EndOverlay.getState()) {
             EndOverlay.renderEndScreenOverlay(g);
         }
     }

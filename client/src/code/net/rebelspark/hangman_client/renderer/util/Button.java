@@ -4,7 +4,7 @@ import code.net.rebelspark.hangman_client.eventHandlers.MouseMovementHandler;
 import code.net.rebelspark.hangman_client.init.regestries.Fonts;
 import code.net.rebelspark.hangman_client.renderer.GamePanel;
 import code.net.rebelspark.hangman_client.state.GameStates;
-import code.net.rebelspark.hangman_client.util.IllegalSpriteArgumentException;
+import code.net.rebelspark.hangman_client.util.exceptions.IllegalSpriteArgumentException;
 import code.net.rebelspark.hangman_client.util.Logger;
 
 import java.awt.*;

@@ -2,8 +2,9 @@ package code.net.rebelspark.hangman_client.renderer.util;
 
 import code.net.rebelspark.hangman_client.game_logic.client.KeyboardKeyStates;
 import code.net.rebelspark.hangman_client.game_logic.offline.Classic;
+import code.net.rebelspark.hangman_client.renderer.GamePanel;
 import code.net.rebelspark.hangman_client.state.GameStates;
-import code.net.rebelspark.hangman_client.util.IllegalSpriteArgumentException;
+import code.net.rebelspark.hangman_client.util.exceptions.IllegalSpriteArgumentException;
 import code.net.rebelspark.hangman_client.util.Logger;
 
 import java.awt.*;
@@ -319,8 +320,11 @@ public class Keyboard {
 
     private static KeyboardButton keyboardKeyBuilder(KEYS key, Keyboard board) {
         return (KeyboardButton) new KeyboardButton.Properties(board + key.toString(), LETTER_POSITIONS.get(key)[0] + (SIZE_W / 2f), LETTER_POSITIONS.get(key)[1] + (SIZE_H / 2f),
-                () -> board.runnable.accept(key)).setText(key.toString(), 55).setBgColor(new Color(100, 100, 100), new Color(180, 180, 180))
-                .setBounds(SIZE_W, SIZE_H).appendBorder(4, Color.BLACK, Color.DARK_GRAY).build();
+            () -> {
+                board.runnable.accept(key);
+                GamePanel.panel.repaint();
+            }).setText(key.toString(), 55).setBgColor(new Color(100, 100, 100), new Color(180, 180, 180))
+            .setBounds(SIZE_W, SIZE_H).appendBorder(4, Color.BLACK, Color.DARK_GRAY).build();
     }
 
     public Keyboard(GameStates screen, float x, float y, Consumer<KEYS> runnable) {
@@ -385,7 +389,7 @@ public class Keyboard {
         KEYBOARD_BUTTONS.add(KEYBOARD_M);
     }
 
-    public void render(Graphics g, final int w, final int h) {
+    public void render(Graphics g) {
         KEYBOARD_Q.render(g);
         KEYBOARD_W.render(g);
         KEYBOARD_E.render(g);
