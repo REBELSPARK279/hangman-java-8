@@ -1,6 +1,7 @@
 package code.net.rebelspark.hangman_client.eventHandlers;
 
 import code.net.rebelspark.hangman_client.keybinds.handlers.KeybindInterface;
+import code.net.rebelspark.hangman_client.keybinds.keyboardNav.KeyboardNavMain;
 import code.net.rebelspark.hangman_client.keybinds.screens.*;
 import code.net.rebelspark.hangman_client.keybinds.subscreens.main_menu.MainMenu_ExitScreen_Keybinds;
 import code.net.rebelspark.hangman_client.renderer.GamePanel;
@@ -48,6 +49,17 @@ public class KeyListnerHandler implements KeyListener {
         }
         if (KeyEvent.VK_F3 == KEY) {
             DebugState.debugOn = !DebugState.debugOn;
+        }
+        if (KeyEvent.VK_UP == KEY) {
+            KeyboardNavMain.keyClick(KeyboardNavMain.NAV_KEYS.UP);
+        } else if (KeyEvent.VK_DOWN == KEY) {
+            KeyboardNavMain.keyClick(KeyboardNavMain.NAV_KEYS.DOWN);
+        } else if (KeyEvent.VK_LEFT == KEY) {
+            KeyboardNavMain.keyClick(KeyboardNavMain.NAV_KEYS.LEFT);
+        } else if (KeyEvent.VK_RIGHT == KEY) {
+            KeyboardNavMain.keyClick(KeyboardNavMain.NAV_KEYS.RIGHT);
+        } else if (KeyEvent.VK_ENTER == KEY) {
+            KeyboardNavMain.keyClick(KeyboardNavMain.NAV_KEYS.ENTER);
         }
         target.acceptKey(KEY);
         EndOverlay.setDelayedState();

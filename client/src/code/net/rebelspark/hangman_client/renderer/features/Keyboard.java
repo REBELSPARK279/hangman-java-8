@@ -1,4 +1,4 @@
-package code.net.rebelspark.hangman_client.renderer.util;
+package code.net.rebelspark.hangman_client.renderer.features;
 
 import code.net.rebelspark.hangman_client.game_logic.client.KeyboardKeyStates;
 import code.net.rebelspark.hangman_client.game_logic.offline.Classic;
@@ -19,8 +19,8 @@ public class Keyboard {
 
     public static class KeyboardButton extends Button {
         public KeyboardButton(String name, GameStates screen, float x, float y, float w, float h, String text, float textSize, BufferedImage idleImage, BufferedImage hoverImage,
-                       Color idleColor, Color hoverColor, Color idleTextColor, Color hoverTextColor, Border border, Type type, Runnable runnable) {
-            super(name, screen, x, y, w, h, text, textSize, idleImage, hoverImage, idleColor, hoverColor, idleTextColor, hoverTextColor, border, type, runnable);
+                       Color idleColor, Color hoverColor, Color idleTextColor, Color hoverTextColor, Border border, Type type, boolean drawFromTopLeft, Runnable runnable) {
+            super(name, screen, x, y, w, h, text, textSize, idleImage, hoverImage, idleColor, hoverColor, idleTextColor, hoverTextColor, border, type, drawFromTopLeft, runnable, new int[] {-1, -1});
         }
 
         public void polishBoard(GameStates screen, float x, float y) {
@@ -132,7 +132,7 @@ public class Keyboard {
                     }
                 }
                 return (new KeyboardButton(name, screen, x, y, w, h, text, textSize, idleImage, hoverImage, idleColor, hoverColor, idleTextColor, hoverTextColor,
-                        border, type, runnable));
+                        border, type, false, runnable));
             }
         }
     }

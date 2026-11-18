@@ -4,8 +4,8 @@ import code.net.rebelspark.hangman_client.game_logic.offline.Classic;
 import code.net.rebelspark.hangman_client.init.regestries.Fonts;
 import code.net.rebelspark.hangman_client.renderer.GamePanel;
 import code.net.rebelspark.hangman_client.renderer.overlay.in_game.EndOverlay;
-import code.net.rebelspark.hangman_client.renderer.util.Keyboard;
-import code.net.rebelspark.hangman_client.renderer.util.Label;
+import code.net.rebelspark.hangman_client.renderer.features.Keyboard;
+import code.net.rebelspark.hangman_client.renderer.features.Label;
 import code.net.rebelspark.hangman_client.state.GameStates;
 import code.net.rebelspark.hangman_client.util.Logger;
 
@@ -73,7 +73,7 @@ public class BaseGameScreen {
     private static final GameSlot GAME_SLOT_12 = new GameSlot((byte)12, WORD_SLOT_SPACING * 12 + WORD_SLOT_W * (12 - 1), WORD_SLOT_Y_PLACEMENT * GAMESPACE_H,
             WORD_SLOT_W, WORD_SLOT_LINE_H, Color.BLACK);
 
-    private static final Label LIVES_LABEL = new Label(0.75f, 0.25f, "- Lives", 90);
+    private static final Label LIVES_LABEL = new Label.Properties(0.75f, 0.25f, "- Lives").textSize(90).build();
 
     public static void setLivesLabel(String text) {
         LIVES_LABEL.setText(text);

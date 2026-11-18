@@ -16,12 +16,12 @@ public class SoundHandler {
                 Logger.WARN("Unable to load sound \"" + path + "\"");
                 return(null);
             } else {
-                Logger.INFO("Loaded sound " + getSoundInfo(sound) + "!");
+                Logger.INFO("Loaded sound " + getSoundInfo(sound));
                 return (sound);
             }
         } catch (Exception exception) {
             Logger.WARN("Unable to load sound " + path);
-            exception.printStackTrace();
+            exception.printStackTrace(System.err);
             return(null);
         }
     }
@@ -53,7 +53,7 @@ public class SoundHandler {
 
     private static String getSoundInfo(AudioInputStream sound) {
         AudioFormat audioFormat = sound.getFormat();
-        return ("SOUND [Channels" + audioFormat.getChannels() + ", Rate" + audioFormat.getSampleRate() + ", Encoding" + audioFormat.getEncoding() + "]");
+        return ("SOUND [Channels:" + audioFormat.getChannels() + ", Rate:" + audioFormat.getSampleRate() + ", Encoding:" + audioFormat.getEncoding() + "]");
     }
 
 }

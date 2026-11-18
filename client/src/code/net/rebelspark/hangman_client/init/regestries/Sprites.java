@@ -9,8 +9,10 @@ import java.io.InputStream;
 
 public class Sprites {
 
-    public static void register() {
+    public static BufferedImage ICON;
 
+    public static void register() {
+        ICON = registerSprite("/resources/sprite/icon/icon.png");
     }
 
     private static BufferedImage registerSprite(String path) {

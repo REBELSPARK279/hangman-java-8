@@ -7,11 +7,11 @@ public class FPSCalc {
     public static void tickFPS() {
         long current = System.currentTimeMillis();
         frameTimes.add(current);
-        while (frameTimes.getFirst() + 1000 < current) {
+        while (frameTimes.getFirst() + 333.334 < current) {
             frameTimes.removeFirst();
         }
     }
     public static int getFPS() {
-        return (frameTimes.size());
+        return (frameTimes.size() * 3);
     }
 }

@@ -1,9 +1,9 @@
 package code.net.rebelspark.hangman_client.renderer.screens;
 
 import code.net.rebelspark.hangman_client.game_logic.offline.OFFLINE_WORDLIST;
-import code.net.rebelspark.hangman_client.renderer.util.Button;
-import code.net.rebelspark.hangman_client.renderer.util.Keyboard;
-import code.net.rebelspark.hangman_client.renderer.util.Label;
+import code.net.rebelspark.hangman_client.renderer.features.Button;
+import code.net.rebelspark.hangman_client.renderer.features.Keyboard;
+import code.net.rebelspark.hangman_client.renderer.features.Label;
 import code.net.rebelspark.hangman_client.state.GameStateHandler;
 import code.net.rebelspark.hangman_client.state.GameStates;
 import code.net.rebelspark.hangman_client.util.CONSTANTS;
@@ -26,8 +26,7 @@ public class SuggestWord {
 
     private static String typed = "";
 
-    private static final Button BACK = new Button.Properties(GameStates.SUGGEST_WORD, "back", 0.05f, 0.05f, () -> {
-        GameStateHandler.triggerDelayedSetGameState(GameStates.MAIN_MENU);
+    public static void writeSuggestions() {
         if (!words.isEmpty()) {
             try {
                 Files.createDirectories(CONSTANTS.USER_PROFILE_SUGGESTED_WORDS_PATH);
@@ -44,14 +43,20 @@ public class SuggestWord {
                     output.append("\"").append(word).append("\",");
                 }
                 Files.write(path, output.toString().getBytes(StandardCharsets.UTF_8));
+                Logger.INFO("Wrote file " + path);
                 words.clear();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
-    }).setText("<--", 65).setTextColor(Color.BLACK, Color.BLUE).build();
+    }
 
-    private static final Label LABEL = new Label(0.5f, 0.15f, "", 70);
+    private static final Button BACK = new Button.Properties(GameStates.SUGGEST_WORD, "back", 0.05f, 0.05f, () -> {
+        GameStateHandler.triggerDelayedSetGameState(GameStates.MAIN_MENU);
+        writeSuggestions();
+    }).setText("<--", 65, Color.BLACK, Color.BLUE).build();
+
+    private static final Label LABEL = new Label.Properties(0.5f, 0.15f, "").textSize(70).build();
 
     private static final Keyboard BOARD = new Keyboard(GameStates.SUGGEST_WORD, 0.25f, 0.5f, SuggestWord::receiveInput);
 

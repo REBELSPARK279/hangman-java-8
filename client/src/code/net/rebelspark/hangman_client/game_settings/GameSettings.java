@@ -1,20 +1,24 @@
 package code.net.rebelspark.hangman_client.game_settings;
 
 import code.net.rebelspark.hangman_client.init.file_readers.SettingsReader;
+import code.net.rebelspark.hangman_client.renderer.GamePanel;
 import code.net.rebelspark.hangman_client.util.CONSTANTS;
 import code.net.rebelspark.hangman_client.util.Logger;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.concurrent.TimeUnit;
 
 public class GameSettings {
 
     public ResolutionHandler.Resolutions resolution;
     public boolean fullscreen;
+    public FpsLimiter.FPS_LIMS fpsLimit;
 
-    public GameSettings(ResolutionHandler.Resolutions resolution, boolean fullscreen) {
+    public GameSettings(ResolutionHandler.Resolutions resolution, boolean fullscreen, FpsLimiter.FPS_LIMS fpsLimit) {
         this.resolution = resolution;
         this.fullscreen = fullscreen;
+        this.fpsLimit = fpsLimit;
     }
 
     private GameSettings() {}
@@ -22,6 +26,7 @@ public class GameSettings {
     public GameSettings(GameSettings other) {
         this.fullscreen = other.fullscreen;
         this.resolution = other.resolution;
+        this.fpsLimit = other.fpsLimit;
     }
 
     public GameSettings clone() {
@@ -29,7 +34,7 @@ public class GameSettings {
     }
 
     public String toString() {
-        return ("GameSettings [fullscreen " + fullscreen + ", resolution " + resolution + "]");
+        return ("GameSettings [fullscreen " + fullscreen + ", resolution " + resolution + ", fps_lim " + fpsLimit + "]");
     }
 
     @Deprecated
@@ -47,7 +52,8 @@ public class GameSettings {
 
         final String formattedSettings =
                 "\"window_size\": '" + potentialNewSettings.resolution.toString().substring(1) + "p'\n" +
-                "\"fullscreen\": '" + potentialNewSettings.fullscreen + "'\n";
+                "\"fullscreen\": '" + potentialNewSettings.fullscreen + "'\n" +
+                "\"fps_limit\": '" + potentialNewSettings.fpsLimit + "'\n";
 
         try {
             Files.write(CONSTANTS.USER_PROFILE_SETTINGS_FILEPATH, formattedSettings.getBytes());
@@ -63,9 +69,12 @@ public class GameSettings {
             ResolutionHandler.setResolution(potentialNewSettings.resolution);
         }
 
+        FpsLimiter.setFpsLimit(potentialNewSettings.fpsLimit);
+        FpsLimiter.settingsApplied();
+
         currentSettings = potentialNewSettings.clone();
     }
 
-    public static GameSettings currentSettings = new GameSettings(SettingsReader.RedSettings.parseResolution(), SettingsReader.RedSettings.parseFullscreen());
+    public static GameSettings currentSettings = new GameSettings(SettingsReader.RedSettings.parseResolution(), SettingsReader.RedSettings.parseFullscreen(), SettingsReader.RedSettings.parseFpsLimit());
     public static GameSettings potentialNewSettings = new GameSettings();
 }

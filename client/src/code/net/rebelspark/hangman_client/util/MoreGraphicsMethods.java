@@ -4,7 +4,7 @@ import java.awt.*;
 
 public class MoreGraphicsMethods {
 
-    public static void drawThickRect(Graphics g, int x, int y, int w, int h, int t) {
+    public static void drawThickRect(Graphics g, int x, int y, int w, int h, int t/*should be scaled to window already*/) {
         int x1 = 0;
         int y1 = 0;
         int w1 = 0;

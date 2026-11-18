@@ -1,0 +1,29 @@
+Update ALPHA-0.3 changelog
+
+
+> gameplay changes:
+-> added a few new words
+
+> qol changes
+-> gave the game a cool little icon
+-> added ability to navigate menus with arrow keys and enter/esc
+-> very very early FPS cap - will become more efficient when renderer is replaced in a soon update
+
+> backend changes:
+-> reduced overall bloat of Button.java class by removing deprecated methods and converting all usages to the new Properties way
+-> added the properties way to Checkbox and Label
+-> made any interactable utility renderer required to use the InputtableFeature class
+-> reduced sample rate of the FPS calculator from 1s to 0.333s
+-> added drawFromTopLeft methods to renderer util classes to allow for drawing from top left instead of being forced to draw from the middle
+-> added program time to debug overlay
+-> added 322 by Creo
+
+> bug fixes:
+-> fixed Button.java's toString method not returning all values
+-> added toString method to Button.java's nested Border class
+-> fixed typo in word 'quadrillion' (was 'quadillion')
+-> fixed bug where checkboxes wouldn't render hover color correctly
+-> fixed grammatical bug in OfflineWordListVerifier
+
+> delayed features:
+-> song chooser

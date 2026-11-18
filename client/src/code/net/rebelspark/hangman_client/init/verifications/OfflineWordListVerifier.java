@@ -30,10 +30,10 @@ public class OfflineWordListVerifier {
         }
         if (!dupeList.isEmpty() || !tooLongList.isEmpty() || !tooShortList.isEmpty() || !badCasingList.isEmpty()) {
             throw new WordListException("Wordlist malformed!\n" +
-                    "Dupes [" + dupeList.size() + "]" + (dupeList.isEmpty()? "": ": \"" + Arrays.toString(dupeList.toArray()) + "\"\n") +
-                    "Too long words [" + tooLongList.size() + "]" + (tooLongList.isEmpty()? "": ": \"" + Arrays.toString(tooLongList.toArray()) + "\"\n") +
-                    "Too short words [" + tooShortList.size() + "]" + (tooShortList.isEmpty()? "": ": \"" + Arrays.toString(tooShortList.toArray()) + "\"\n") +
-                    "Bad cased [" + badCasingList.size() + "]" + (badCasingList.isEmpty()? "": ": \"" + Arrays.toString(badCasingList.toArray()) + "\"\n")
+                    "Dupes [" + dupeList.size() + "]" + (dupeList.isEmpty()? "\n": ": \"" + Arrays.toString(dupeList.toArray()) + "\"\n") +
+                    "Too long words [" + tooLongList.size() + "]" + (tooLongList.isEmpty()? "\n": ": \"" + Arrays.toString(tooLongList.toArray()) + "\"\n") +
+                    "Too short words [" + tooShortList.size() + "]" + (tooShortList.isEmpty()? "\n": ": \"" + Arrays.toString(tooShortList.toArray()) + "\"\n") +
+                    "Bad cased [" + badCasingList.size() + "]" + (badCasingList.isEmpty()? "\n": ": \"" + Arrays.toString(badCasingList.toArray()) + "\"\n")
             );
         }
     }

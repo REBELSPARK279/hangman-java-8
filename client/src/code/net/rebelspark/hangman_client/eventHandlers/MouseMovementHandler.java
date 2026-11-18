@@ -1,5 +1,6 @@
 package code.net.rebelspark.hangman_client.eventHandlers;
 
+import code.net.rebelspark.hangman_client.keybinds.keyboardNav.KeyboardNavMain;
 import code.net.rebelspark.hangman_client.renderer.GamePanel;
 
 import java.awt.event.MouseEvent;
@@ -15,6 +16,7 @@ public class MouseMovementHandler implements MouseMotionListener {
         mouseX = e.getX();
         mouseY = e.getY();
 
+        KeyboardNavMain.keyboardHoverActive = false;
         GamePanel.panel.repaint();
     }
 
@@ -23,11 +25,8 @@ public class MouseMovementHandler implements MouseMotionListener {
         mouseX = e.getX();
         mouseY = e.getY();
 
+        KeyboardNavMain.keyboardHoverActive = false;
         GamePanel.panel.repaint();
-    }
-
-    public static int[] getMouse() {
-        return (new int[]{mouseX, mouseY});
     }
 
     public static int getMouseX() {

@@ -3,7 +3,9 @@ package code.net.rebelspark.hangman_client.renderer;
 import code.net.rebelspark.hangman_client.eventHandlers.KeyListnerHandler;
 import code.net.rebelspark.hangman_client.eventHandlers.MouseListenerHandler;
 import code.net.rebelspark.hangman_client.eventHandlers.MouseMovementHandler;
+import code.net.rebelspark.hangman_client.game_settings.FpsLimiter;
 import code.net.rebelspark.hangman_client.game_settings.ResolutionHandler;
+import code.net.rebelspark.hangman_client.init.regestries.Sprites;
 import code.net.rebelspark.hangman_client.renderer.overlay.common.DebugOverlay;
 import code.net.rebelspark.hangman_client.renderer.screens.GameMenu;
 import code.net.rebelspark.hangman_client.renderer.screens.MainMenu;
@@ -14,9 +16,16 @@ import code.net.rebelspark.hangman_client.state.DebugState;
 import code.net.rebelspark.hangman_client.state.GameStateHandler;
 import code.net.rebelspark.hangman_client.util.CONSTANTS;
 import code.net.rebelspark.hangman_client.util.FPSCalc;
+import code.net.rebelspark.hangman_client.util.Logger;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class GamePanel extends JPanel {
 
@@ -42,6 +51,7 @@ public class GamePanel extends JPanel {
             window.setResizable(false);
             window.setVisible(true);
             panel.requestFocusInWindow();
+            window.setIconImage(Sprites.ICON);
 
             ResolutionHandler.startStartupFullscreen(); //<-- after window stable
         });
@@ -52,34 +62,41 @@ public class GamePanel extends JPanel {
         return ((width / 9.0f) * 16.0f);
     }
 
+    private static long lastPaint = 0L;
+
     @Override
     protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        switch (GameStateHandler.getGameState()) {
-            case MAIN_MENU:
-                MainMenu.render(g, getWidth(), getHeight());
-                break;
-            case MAIN_MENU__EXIT_SCREEN:
-                MainMenu.ExitScreen.render(g, getWidth(), getHeight());
-                break;
-            case SETTINGS:
-                Settings.render(g, getWidth(), getHeight());
-                break;
-            case GAME_MENU:
-                GameMenu.render(g);
-                break;
-            case IN_GAME_BASE:
-                BaseGameScreen.render(g);
-                break;
-            case SHOP:
-                break;
-            case SUGGEST_WORD:
-                SuggestWord.render(g);
-                break;
+        if (FpsLimiter.getFpsLim() == 0 || System.nanoTime() - lastPaint > 1000000000L / FpsLimiter.getFpsLim()) { //<-- bad rendering way, changing in later update bc ALPHA-0.3 is late
+            lastPaint = System.nanoTime();
+            super.paintComponent(g);
+            FPSCalc.tickFPS();
+            switch (GameStateHandler.getGameState()) {
+                case MAIN_MENU:
+                    MainMenu.render(g, getWidth(), getHeight());
+                    break;
+                case MAIN_MENU__EXIT_SCREEN:
+                    MainMenu.ExitScreen.render(g, getWidth(), getHeight());
+                    break;
+                case SETTINGS:
+                    Settings.render(g, getWidth(), getHeight());
+                    break;
+                case GAME_MENU:
+                    GameMenu.render(g);
+                    break;
+                case IN_GAME_BASE:
+                    BaseGameScreen.render(g);
+                    break;
+                case SHOP:
+                    break;
+                case SUGGEST_WORD:
+                    SuggestWord.render(g);
+                    break;
+            }
+            if (DebugState.debugOn) {
+                DebugOverlay.render(g);
+            }
         }
         if (DebugState.debugOn) {
-            DebugOverlay.render(g);
-            FPSCalc.tickFPS();
             repaint();
         }
     }
