@@ -3,7 +3,7 @@ MINOR BUGFIX/ADDITION UPDATE
 
 
 > gameplay changes:
--> added a few new words
+-> added many new words (dictionary now 1000 words)
 
 > qol changes:
 -> added a label to word suggestions with info
