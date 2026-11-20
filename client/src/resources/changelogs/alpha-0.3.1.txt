@@ -1,0 +1,20 @@
+Update ALPHA-0.3.1 changelog
+MINOR BUGFIX/ADDITION UPDATE
+
+
+> gameplay changes:
+-> added a few new words
+
+> qol changes:
+-> added a label to word suggestions with info
+-> saved .HANGMAN file suggestions now have the date in the filename
+
+> backend changes:
+-> added methods to change font of buttons
+-> added a RoundedButton class (skeleton of whats planned)
+
+> bug fixes:
+-> added a line break between words in suggested word files
+-> fixed typo in word 'sextillion' (was 'sexillion')
+
+> delayed features:

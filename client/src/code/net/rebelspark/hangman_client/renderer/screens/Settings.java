@@ -5,7 +5,7 @@ import code.net.rebelspark.hangman_client.game_settings.GameSettings;
 import code.net.rebelspark.hangman_client.game_settings.ResolutionHandler;
 import code.net.rebelspark.hangman_client.init.file_readers.SettingsReader;
 import code.net.rebelspark.hangman_client.renderer.GamePanel;
-import code.net.rebelspark.hangman_client.renderer.features.Button;
+import code.net.rebelspark.hangman_client.renderer.features.button.Button;
 import code.net.rebelspark.hangman_client.renderer.features.CheckBox;
 import code.net.rebelspark.hangman_client.renderer.features.Label;
 import code.net.rebelspark.hangman_client.state.GameStateHandler;

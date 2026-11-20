@@ -3,7 +3,7 @@ package code.net.rebelspark.hangman_client.game_logic.offline;
 import code.net.rebelspark.hangman_client.game_logic.client.KeyboardKeyStates;
 import code.net.rebelspark.hangman_client.renderer.screens.in_game.BaseGameScreen;
 import code.net.rebelspark.hangman_client.renderer.overlay.in_game.EndOverlay;
-import code.net.rebelspark.hangman_client.renderer.features.Button;
+import code.net.rebelspark.hangman_client.renderer.features.button.Button;
 import code.net.rebelspark.hangman_client.renderer.features.Keyboard;
 import code.net.rebelspark.hangman_client.state.GameStates;
 import code.net.rebelspark.hangman_client.util.BetterMath;

@@ -1,7 +1,7 @@
 package code.net.rebelspark.hangman_client.renderer.screens;
 
 import code.net.rebelspark.hangman_client.game_logic.offline.Classic;
-import code.net.rebelspark.hangman_client.renderer.features.Button;
+import code.net.rebelspark.hangman_client.renderer.features.button.Button;
 import code.net.rebelspark.hangman_client.renderer.features.Label;
 import code.net.rebelspark.hangman_client.state.GameStateHandler;
 import code.net.rebelspark.hangman_client.state.GameStates;

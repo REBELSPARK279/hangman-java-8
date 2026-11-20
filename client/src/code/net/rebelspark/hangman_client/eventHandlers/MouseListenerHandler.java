@@ -4,8 +4,6 @@ import code.net.rebelspark.hangman_client.renderer.GamePanel;
 import code.net.rebelspark.hangman_client.renderer.features.interfaces.InputtableFeature;
 import code.net.rebelspark.hangman_client.renderer.features.util.InputtableFeatures;
 import code.net.rebelspark.hangman_client.renderer.overlay.in_game.EndOverlay;
-import code.net.rebelspark.hangman_client.renderer.features.Button;
-import code.net.rebelspark.hangman_client.renderer.features.CheckBox;
 import code.net.rebelspark.hangman_client.state.GameStateHandler;
 import code.net.rebelspark.hangman_client.state.GameStates;
 import code.net.rebelspark.hangman_client.util.Logger;

@@ -1,7 +1,8 @@
 package code.net.rebelspark.hangman_client.renderer.screens;
 
 import code.net.rebelspark.hangman_client.game_logic.offline.OFFLINE_WORDLIST;
-import code.net.rebelspark.hangman_client.renderer.features.Button;
+import code.net.rebelspark.hangman_client.init.regestries.Fonts;
+import code.net.rebelspark.hangman_client.renderer.features.button.Button;
 import code.net.rebelspark.hangman_client.renderer.features.Keyboard;
 import code.net.rebelspark.hangman_client.renderer.features.Label;
 import code.net.rebelspark.hangman_client.state.GameStateHandler;
@@ -15,6 +16,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
@@ -30,7 +32,7 @@ public class SuggestWord {
         if (!words.isEmpty()) {
             try {
                 Files.createDirectories(CONSTANTS.USER_PROFILE_SUGGESTED_WORDS_PATH);
-                String time = "" + LocalTime.now().truncatedTo(ChronoUnit.SECONDS);
+                String time = LocalDate.now().toString().replace("-", ".") + "-" + LocalTime.now().truncatedTo(ChronoUnit.SECONDS);
                 Path path = Paths.get(CONSTANTS.USER_PROFILE_SUGGESTED_WORDS_PATH.toString(), time.replace(":", ".") + "_suggestions.hangman");
                 int dupeProt = 0;
                 while (Files.exists(path)) {
@@ -40,7 +42,7 @@ public class SuggestWord {
                 Files.createFile(path);
                 StringBuilder output = new StringBuilder();
                 for (String word: words) {
-                    output.append("\"").append(word).append("\",");
+                    output.append("\"").append(word).append("\",\n");
                 }
                 Files.write(path, output.toString().getBytes(StandardCharsets.UTF_8));
                 Logger.INFO("Wrote file " + path);
@@ -57,6 +59,9 @@ public class SuggestWord {
     }).setText("<--", 65, Color.BLACK, Color.BLUE).build();
 
     private static final Label LABEL = new Label.Properties(0.5f, 0.15f, "").textSize(70).build();
+
+    private static final Label NOTICE1 = new Label.Properties(0.5f, 0.4f, "You must click the back button to save your wordlist").textSize(50).build();
+    private static final Label NOTICE2 = new Label.Properties(0.5f, 0.45f, "This will generate a file in USER/.hangman_rspark/suggested").textSize(50).build();
 
     private static final Keyboard BOARD = new Keyboard(GameStates.SUGGEST_WORD, 0.25f, 0.5f, SuggestWord::receiveInput);
 
@@ -75,9 +80,12 @@ public class SuggestWord {
     public static void enter() {
         if (Arrays.stream(OFFLINE_WORDLIST.OFFINE_WORDLIST).noneMatch(typed::equals)) {
             if (typed.length() >= 5 && typed.length() <= 12) {
-                words.add(typed);
-                typed = "";
-                LABEL.setText(typed);
+                if (!words.add(typed)) {
+                    LABEL.setText("Word already present");
+                } else {
+                    typed = "";
+                    LABEL.setText(typed);
+                }
             } else {
                 LABEL.setText("word not between 5 and 12 letters");
             }
@@ -97,5 +105,7 @@ public class SuggestWord {
         BOARD.render(g);
         BACK.render(g);
         LABEL.render(g);
+        NOTICE1.render(g);
+        NOTICE2.render(g);
     }
 }

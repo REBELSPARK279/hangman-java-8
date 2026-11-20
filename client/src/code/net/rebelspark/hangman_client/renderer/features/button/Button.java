@@ -1,9 +1,10 @@
-package code.net.rebelspark.hangman_client.renderer.features;
+package code.net.rebelspark.hangman_client.renderer.features.button;
 
 import code.net.rebelspark.hangman_client.eventHandlers.MouseMovementHandler;
 import code.net.rebelspark.hangman_client.init.regestries.Fonts;
 import code.net.rebelspark.hangman_client.keybinds.keyboardNav.KeyboardNavMain;
 import code.net.rebelspark.hangman_client.renderer.GamePanel;
+import code.net.rebelspark.hangman_client.renderer.features.Rect;
 import code.net.rebelspark.hangman_client.renderer.features.interfaces.InputtableFeature;
 import code.net.rebelspark.hangman_client.renderer.features.util.InputtableFeatures;
 import code.net.rebelspark.hangman_client.state.GameStates;
@@ -157,11 +158,12 @@ public class Button implements InputtableFeature {
     protected Border border;
     protected boolean drawFromTopLeft;
     protected int[] keyboardSelectCoords;
+    protected Font font;
 
 
     protected Button(String name, GameStates screen, float x, float y, float w, float h, String text, float textSize, BufferedImage idleImage, BufferedImage hoverImage,
                      Color idleColor, Color hoverColor, Color idleTextColor, Color hoverTextColor, Border border, Type type, boolean drawFromTopLeft, Runnable runnable,
-                     int[] keyboardSelectIndex) {
+                     int[] keyboardSelectIndex, Font font) {
         this.name = name;
         this.screen = screen;
         this.x = x;
@@ -183,6 +185,7 @@ public class Button implements InputtableFeature {
         hitbox = new Hitbox();
         this.drawFromTopLeft = drawFromTopLeft;
         keyboardSelectCoords = keyboardSelectIndex;
+        this.font = font;
     }
 
     @Override
@@ -220,6 +223,10 @@ public class Button implements InputtableFeature {
         this.y = y;
         this.width = width;
         this.height = height;
+    }
+
+    public String getText() {
+        return (text);
     }
 
     public void setText(String text) {
@@ -270,6 +277,7 @@ public class Button implements InputtableFeature {
         protected Border border;
         protected boolean drawFromTopLeft;
         protected int[] keyboardSelectIndex = {-1, -1};
+        protected Font font;
 
         protected final String PROPERTY_ALR_DEFINED_MSG_LOGGER = "Tried to set one property to a button twice";
         protected final String PROPERTY_ALR_DEFINED_THROWED_MSG = "You cannot set the same property to a button more than once.";
@@ -294,7 +302,7 @@ public class Button implements InputtableFeature {
             return (setText(text, textSize, idleColor, Color.BLACK));
         }
 
-        public Properties setText(String text, float textSize, Color idleColor, Color hoverColor) {
+        public Properties setText(final String text, final float textSize, final Color idleColor, final Color hoverColor) {
             if (setProperties.contains(Props.SET_TEXT)) {
                 Logger.FATAL(PROPERTY_ALR_DEFINED_MSG_LOGGER);
                 throw new IllegalSpriteArgumentException(PROPERTY_ALR_DEFINED_THROWED_MSG);
@@ -304,6 +312,11 @@ public class Button implements InputtableFeature {
             this.textSize = (float)(textSize / 1080.0);
             this.idleTextColor = idleColor;
             this.hoverTextColor = hoverColor;
+            return (this);
+        }
+
+        public Properties setFont(final Font font) {
+            this.font = font;
             return (this);
         }
 
@@ -410,6 +423,9 @@ public class Button implements InputtableFeature {
             if (text != null && textSize <= 0.0) {
                 this.textSize = DEFAULT_TEXT_SIZE;
             }
+            if (font == null) {
+                font = Fonts.RUBIK;
+            }
             if (text != null && idleColor == null) {
                 if (hoverTextColor == null) {
                     this.type = Type.TEXT_NON_HOVER;
@@ -463,7 +479,7 @@ public class Button implements InputtableFeature {
                 }
             }
             return (new Button(name, screen, x, y, w, h, text, textSize, idleImage, hoverImage, idleColor, hoverColor, idleTextColor, hoverTextColor,
-                    border, type, drawFromTopLeft, runnable, keyboardSelectIndex));
+                    border, type, drawFromTopLeft, runnable, keyboardSelectIndex, font));
         }
     }
 
@@ -487,11 +503,11 @@ public class Button implements InputtableFeature {
         if (keyboardHover || hitbox.checkBounds()) {
             hover = true;
         }
+        g2d.setFont(font.deriveFont(textSize * WINDOW_HEIGHT));
         switch (type) {
             case NONE:
                 break;
             case TEXT:
-                g2d.setFont(Fonts.RUBIK.deriveFont(textSize * WINDOW_HEIGHT));
                 fontMetrics = g2d.getFontMetrics();
                 X = drawFromTopLeft? (int)(x * WINDOW_WIDTH): (int)((x * WINDOW_WIDTH) - (fontMetrics.stringWidth(text) / 2.0));
                 Y = drawFromTopLeft? (int)(y * WINDOW_HEIGHT): (int)((y * WINDOW_HEIGHT) - ((fontMetrics.getDescent() + fontMetrics.getAscent()) / 2.0));
@@ -501,7 +517,6 @@ public class Button implements InputtableFeature {
                 g2d.setColor(Color.BLACK);
                 break;
             case TEXT_NON_HOVER:
-                g2d.setFont(Fonts.RUBIK.deriveFont(textSize * WINDOW_HEIGHT));
                 fontMetrics = g2d.getFontMetrics();
                 X = drawFromTopLeft? (int)(x * WINDOW_WIDTH): (int)((x * WINDOW_WIDTH) - (fontMetrics.stringWidth(text) / 2.0));
                 Y = drawFromTopLeft? (int)(y * WINDOW_HEIGHT): (int)((y * WINDOW_HEIGHT) - ((fontMetrics.getDescent() + fontMetrics.getAscent()) / 2.0));
@@ -549,7 +564,6 @@ public class Button implements InputtableFeature {
                 g.setColor(Color.BLACK);
                 break;
             case COLOR_TEXT:
-                g2d.setFont(Fonts.RUBIK.deriveFont(textSize * WINDOW_HEIGHT));
                 fontMetrics = g2d.getFontMetrics();
                 W = (int)(width * WINDOW_WIDTH);
                 H = (int)(height * WINDOW_HEIGHT);
@@ -565,7 +579,6 @@ public class Button implements InputtableFeature {
                 g2d.setColor(Color.BLACK);
                 break;
             case COLOR_TEXT_NON_HOVER:
-                g2d.setFont(Fonts.RUBIK.deriveFont(textSize * WINDOW_HEIGHT));
                 fontMetrics = g2d.getFontMetrics();
                 W = (int)(width * WINDOW_WIDTH);
                 H = (int)(height * WINDOW_HEIGHT);
@@ -581,7 +594,6 @@ public class Button implements InputtableFeature {
                 g2d.setColor(Color.BLACK);
                 break;
             case COLOR_NON_HOVER_TEXT:
-                g2d.setFont(Fonts.RUBIK.deriveFont(textSize * WINDOW_HEIGHT));
                 fontMetrics = g2d.getFontMetrics();
                 W = (int)(width * WINDOW_WIDTH);
                 H = (int)(height * WINDOW_HEIGHT);
@@ -597,7 +609,6 @@ public class Button implements InputtableFeature {
                 g2d.setColor(Color.BLACK);
                 break;
             case COLOR_NON_HOVER_TEXT_NON_HOVER:
-                g2d.setFont(Fonts.RUBIK.deriveFont(textSize * WINDOW_HEIGHT));
                 fontMetrics = g2d.getFontMetrics();
                 W = (int)(width * WINDOW_WIDTH);
                 H = (int)(height * WINDOW_HEIGHT);

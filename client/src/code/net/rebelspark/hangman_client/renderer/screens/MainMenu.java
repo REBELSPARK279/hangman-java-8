@@ -4,7 +4,7 @@ import code.net.rebelspark.hangman_client.game_settings.FpsLimiter;
 import code.net.rebelspark.hangman_client.game_settings.GameSettings;
 import code.net.rebelspark.hangman_client.game_settings.ResolutionHandler;
 import code.net.rebelspark.hangman_client.init.regestries.Fonts;
-import code.net.rebelspark.hangman_client.renderer.features.Button;
+import code.net.rebelspark.hangman_client.renderer.features.button.Button;
 import code.net.rebelspark.hangman_client.renderer.features.FilledRect;
 import code.net.rebelspark.hangman_client.renderer.features.Label;
 import code.net.rebelspark.hangman_client.state.GameStateHandler;

@@ -2,7 +2,9 @@ package code.net.rebelspark.hangman_client.renderer.features;
 
 import code.net.rebelspark.hangman_client.game_logic.client.KeyboardKeyStates;
 import code.net.rebelspark.hangman_client.game_logic.offline.Classic;
+import code.net.rebelspark.hangman_client.init.regestries.Fonts;
 import code.net.rebelspark.hangman_client.renderer.GamePanel;
+import code.net.rebelspark.hangman_client.renderer.features.button.Button;
 import code.net.rebelspark.hangman_client.state.GameStates;
 import code.net.rebelspark.hangman_client.util.exceptions.IllegalSpriteArgumentException;
 import code.net.rebelspark.hangman_client.util.Logger;
@@ -17,10 +19,10 @@ import java.util.function.Consumer;
 
 public class Keyboard {
 
-    public static class KeyboardButton extends Button {
+    public static class KeyboardButton extends code.net.rebelspark.hangman_client.renderer.features.button.Button {
         public KeyboardButton(String name, GameStates screen, float x, float y, float w, float h, String text, float textSize, BufferedImage idleImage, BufferedImage hoverImage,
                        Color idleColor, Color hoverColor, Color idleTextColor, Color hoverTextColor, Border border, Type type, boolean drawFromTopLeft, Runnable runnable) {
-            super(name, screen, x, y, w, h, text, textSize, idleImage, hoverImage, idleColor, hoverColor, idleTextColor, hoverTextColor, border, type, drawFromTopLeft, runnable, new int[] {-1, -1});
+            super(name, screen, x, y, w, h, text, textSize, idleImage, hoverImage, idleColor, hoverColor, idleTextColor, hoverTextColor, border, type, drawFromTopLeft, runnable, new int[] {-1, -1}, Fonts.RUBIK);
         }
 
         public void polishBoard(GameStates screen, float x, float y) {
@@ -205,9 +207,9 @@ public class Keyboard {
         final ArrayList<Character> guessedLetters = Classic.getGuessedLetters();
         final ArrayList<Character> correctLetters = Classic.getCorrectLetters();
         for (KeyboardButton key: board.KEYBOARD_BUTTONS) {
-            if (correctLetters.contains(key.text.toLowerCase().charAt(0))) {
+            if (correctLetters.contains(key.getText().toLowerCase().charAt(0))) {
                 key.setState(KeyboardKeyStates.YES);
-            } else if (guessedLetters.contains(key.text.toLowerCase().charAt(0))) {
+            } else if (guessedLetters.contains(key.getText().toLowerCase().charAt(0))) {
                 key.setState(KeyboardKeyStates.NO);
             } else {
                 key.setState(KeyboardKeyStates.UNGUESSED);

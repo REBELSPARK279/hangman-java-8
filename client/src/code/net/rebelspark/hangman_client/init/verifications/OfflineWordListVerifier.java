@@ -1,6 +1,7 @@
 package code.net.rebelspark.hangman_client.init.verifications;
 
 import code.net.rebelspark.hangman_client.game_logic.offline.OFFLINE_WORDLIST;
+import code.net.rebelspark.hangman_client.util.Logger;
 import code.net.rebelspark.hangman_client.util.exceptions.WordListException;
 
 import java.util.Arrays;
@@ -36,5 +37,6 @@ public class OfflineWordListVerifier {
                     "Bad cased [" + badCasingList.size() + "]" + (badCasingList.isEmpty()? "\n": ": \"" + Arrays.toString(badCasingList.toArray()) + "\"\n")
             );
         }
+        Logger.INFO("Loaded " + OFFLINE_WORDLIST.OFFINE_WORDLIST.length + " words!");
     }
 }
